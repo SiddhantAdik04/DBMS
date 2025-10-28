@@ -1,0 +1,99 @@
+declare
+eid int;
+en varchar(20);
+sal float;
+dept varchar(20);
+nm varchar(20);
+cursor c1 is select * from employe;
+begin
+open c1;
+loop
+fetch c1 into eid,en,sal,dept;
+exit when c1%notfound;
+dbms_output.put_line(eid || en || sal || dept);
+end loop;
+close c1;
+end;
+/
+
+SQL*Plus: Release 21.0.0.0.0 - Production on Fri Sep 26 13:49:29 2025
+Version 21.3.0.0.0
+
+Copyright (c) 1982, 2021, Oracle. All rights reserved.
+
+Enter user-name: system
+Enter password:
+Last Successful login time: Fri Sep 26 2025 13:48:50 +05:30
+
+Connected to:
+Oracle Database 21c Express Edition Release 21.0.0.0.0 - Production
+Version 21.3.0.0.0
+
+SQL> create table employe (eid int primary key, en varchar2(20), sal float, dept varchar2(20));
+
+Table created.
+
+SQL> insert into employe values (101, 'Asmita', 70000, 'finance');
+
+1 row created.
+
+SQL> insert into employe values (102, 'Soham', 60000, 'hr');
+
+1 row created.
+
+SQL> insert into employe values (103, 'Tapish', 55000, 'marketing');
+
+1 row created.
+
+SQL> insert into employe values (104, 'Prachi', 47000, 'sales');
+
+1 row created.
+
+SQL> select * from employe;
+
+EID EN SAL DEPT
+---------- -------------------- ---------- --------------------
+101 Asmita 48000 finance
+102 Soham 55000 hr
+103 Tapish 60000 marketing
+104 Prachi 47000 sales
+
+SQL> set serveroutput on;
+SQL> @C:\Users\System05\Desktop\New folder\Cursor1.sql
+SP2-0310: unable to open file "C:\Users\System05\Desktop\New.sql"
+SQL> @"C:\Users\System05\Desktop\New folder\Cursor1.sql"
+101Asmita48000finance
+102Soham55000hr
+103Tapish60000marketing
+104Prachi47000sales
+
+PL/SQL procedure successfully completed.
+
+
+· Parameterised Cursor :
+
+declare
+eid int;
+en varchar2(20);
+sal float;
+dept varchar2(20);
+nm varchar2(20) := 'it';
+cursor c1(p_dept varchar2) is
+select eid, en, sal, dept
+from employee
+where dept = p_dept;
+begin
+open c1(nm);
+loop
+fetch c1 into eid, en, sal, dept;
+exit when c1%notfound;
+dbms_output.put_line('eid: ' || to_char(eid) || ', en: ' || en || ', sal: ' || to_char(sal) || ', dept: ' || dept);
+end loop;
+close c1;
+end;
+/
+
+SQL> set serveroutput on;
+SQL> @"C:\Users\System05\Desktop\New folder\ParameterisedCursor.sql"
+
+PL/SQL procedure successfully completed
